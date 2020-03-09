@@ -327,3 +327,25 @@ for filename in glob.glob(os.path.join(folder_path, '*.txt')):
 for values in genre_dictionary:
     
 print(genre_dictionary)
+
+
+
+_________
+
+genre = ['Pop', 'Metal', 'Indie', 'Electronic', 'R&B', 'Rock', 'Folk', 'Hiphop', 'Country', 'Jazz'}
+
+for i in genre:
+    folder_path = '/Users/christiankeaunui/Desktop/DC3/' + i
+    for filename in glob.glob(os.path.join(folder_path, '*.txt')):
+        with open(filename, 'r') as f:
+            text = f.read().splitlines()
+            for lyric in text:
+                lyric.splitlines()
+                lyric = replace_contractions(lyric)
+                words = normalize(nltk.word_tokenize(lyric))
+                words = translate_language(words)
+    
+                for word in words:
+                    english = translator.translate(word)
+                    word = word.lower()
+                    genre_dictionary[genre].append(word)
