@@ -131,20 +131,25 @@ def stem_and_lemmatize(words):
     lemmas = lemmatize_verbs(words)
     return stems, lemmas
 
-def translate_language(words):
-    new_words = []
-    for word in words:
-        if len(word) >=3:
-            b = TextBlob(word)
-            if (b.detect_language()) != 'en':
-                googletranslate = translator.translate(word)
-                word = googletranslate.text
-                new_words.append(word)
-            else:
-                new_words.append(word)
-        else:
-            new_words.append(word)
-    return new_words
+# def translate_language(words):
+# #     new_words = []
+# #     for word in words:
+# #         if len(word) >=3:
+# #             b = TextBlob(word)
+# #             if (b.detect_language()) != 'en':
+# #                 googletranslate = translator.translate(word)
+# #                 word = googletranslate.text
+# #                 new_words.append(word)
+# #             else:
+# #                 new_words.append(word)
+# #         else:
+# #             new_words.append(word)
+# #     return new_words
+
+def translate_to_english(words):
+    translator = Translator()
+    return translator.translate(words).text
+
 
 
 # stems, lemmas = stem_and_lemmatize(words)
@@ -153,177 +158,29 @@ def translate_language(words):
 
 translator = Translator()
 
-#JAZZ
-folder_path = '/Users/jasmine/Desktop/DC3/Jazz'
-for filename in glob.glob(os.path.join(folder_path, '*.txt')):
-    with open(filename, 'r') as f:
-        text = f.read()
-        text = text.splitlines()
-        for jazz_lyric in text:
-            jazz_lyric.splitlines()
-            replace_contractions(jazz_lyric)
-            words = nltk.word_tokenize(jazz_lyric)
-            words = normalize(words)
-            # words = translate_language(words)
 
-            for word in words:
-                # english = translator.translate(word)
-                word = word.lower()
-                genre_dictionary['jazz'].append(word)
-#COUNTRY
-folder_path = '/Users/jasmine/Desktop/DC3/Country'
-for filename in glob.glob(os.path.join(folder_path, '*.txt')):
-    with open(filename, 'r') as f:
-        text = f.read()
-        text = text.splitlines()
-        for country_lyric in text:
-            country_lyric.splitlines()
-            replace_contractions(country_lyric)
-            words = nltk.word_tokenize(country_lyric)
-            words = normalize(words)
-            # words = translate_language(words)
 
-            for word in words:
-                # english = translator.translate(word)
-                word = word.lower()
-                genre_dictionary['country'].append(word)
-#R&B
-folder_path = '/Users/jasmine/Desktop/DC3/R&B'
-for filename in glob.glob(os.path.join(folder_path, '*.txt')):
-    with open(filename, 'r') as f:
-        text = f.read()
-        text = text.splitlines()
-        for rb_lyric in text:
-            rb_lyric.splitlines()
-            replace_contractions(rb_lyric)
-            words = nltk.word_tokenize(rb_lyric)
-            words = normalize(words)
-            # words = translate_language(words)
+genre = ['Pop', 'Metal', 'Indie', 'Electronic', 'R&B', 'Rock', 'Folk', 'Hiphop', 'Country', 'Jazz']
 
-            for word in words:
-                # english = translator.translate(word)
-                word = word.lower()
-                genre_dictionary['RB'].append(word)
-#ELECTRONIC
-folder_path = '/Users/jasmine/Desktop/DC3/Electronic'
-for filename in glob.glob(os.path.join(folder_path, '*.txt')):
-    with open(filename, 'r') as f:
-        text = f.read()
-        text = text.splitlines()
-        for electronic_lyric in text:
-            electronic_lyric.splitlines()
-            replace_contractions(electronic_lyric)
-            words = nltk.word_tokenize(electronic_lyric)
-            words = normalize(words)
-            # words = translate_language(words)
+for i in genre:
+    folder_path = '/Users/jasmine/Desktop/DC3/' + i
+    for filename in glob.glob(os.path.join(folder_path, '*.txt')):
+        with open(filename, 'r') as f:
+            text = f.read().splitlines()
+            for lyric in text:
+                lyric = translate_to_english(lyric)
+                lyric.splitlines()
+                lyric = replace_contractions(lyric)
+                words = normalize(nltk.word_tokenize(lyric))
 
-            for word in words:
-                # english = translator.translate(word)
-                word = word.lower()
-                genre_dictionary['electronic'].append(word)
-#METAL
-folder_path = '/Users/jasmine/Desktop/DC3/Metal'
-for filename in glob.glob(os.path.join(folder_path, '*.txt')):
-    with open(filename, 'r') as f:
-        text = f.read()
-        text = text.splitlines()
-        for metal_lyric in text:
-            metal_lyric.splitlines()
-            replace_contractions(metal_lyric)
-            words = nltk.word_tokenize(metal_lyric)
-            words = normalize(words)
-            # words = translate_language(words)
+                for word in words:
+                    # english = translator.translate(word).text
+                    # word = english
+                    word = word.lower()
+                    genre_dictionary[genre].append(word)
 
-            for word in words:
-                # english = translator.translate(word)
-                word = word.lower()
-                genre_dictionary['metal'].append(word)
-#INDIE
-folder_path = '/Users/jasmine/Desktop/DC3/Indie'
-for filename in glob.glob(os.path.join(folder_path, '*.txt')):
-    with open(filename, 'r') as f:
-        text = f.read()
-        text = text.splitlines()
-        for indie_lyric in text:
-            indie_lyric.splitlines()
-            replace_contractions(indie_lyric)
-            words = nltk.word_tokenize(indie_lyric)
-            words = normalize(words)
-            # words = translate_language(words)
-
-            for word in words:
-                # english = translator.translate(word)
-                word = word.lower()
-                genre_dictionary['indie'].append(word)
-#HIPHOP
-folder_path = '/Users/jasmine/Desktop/DC3/Hiphop'
-for filename in glob.glob(os.path.join(folder_path, '*.txt')):
-    with open(filename, 'r') as f:
-        text = f.read()
-        text = text.splitlines()
-        for hiphop_lyric in text:
-            hiphop_lyric.splitlines()
-            replace_contractions(hiphop_lyric)
-            words = nltk.word_tokenize(hiphop_lyric)
-            words = normalize(words)
-            # words = translate_language(words)
-
-            for word in words:
-                # english = translator.translate(word)
-                word = word.lower()
-                genre_dictionary['hiphop'].append(word)
-#FOLK
-folder_path = '/Users/jasmine/Desktop/DC3/Folk'
-for filename in glob.glob(os.path.join(folder_path, '*.txt')):
-    with open(filename, 'r') as f:
-        text = f.read()
-        text = text.splitlines()
-        for folk_lyric in text:
-            folk_lyric.splitlines()
-            replace_contractions(folk_lyric)
-            words = nltk.word_tokenize(folk_lyric)
-            words = normalize(words)
-            # words = translate_language(words)
-
-            for word in words:
-                # english = translator.translate(word)
-                word = word.lower()
-                genre_dictionary['folk'].append(word)
-#ROCK
-folder_path = '/Users/jasmine/Desktop/DC3/Rock'
-for filename in glob.glob(os.path.join(folder_path, '*.txt')):
-    with open(filename, 'r') as f:
-        text = f.read()
-        text = text.splitlines()
-        for rock_lyric in text:
-            rock_lyric.splitlines()
-            replace_contractions(rock_lyric)
-            words = nltk.word_tokenize(rock_lyric)
-            words = normalize(words)
-            # words = translate_language(words)
-
-            for word in words:
-                # english = translator.translate(word)
-                word = word.lower()
-                genre_dictionary['rock'].append(word)
-#POP
-folder_path = '/Users/jasmine/Desktop/DC3/Pop'
-for filename in glob.glob(os.path.join(folder_path, '*.txt')):
-    with open(filename, 'r') as f:
-        text = f.read()
-        text = text.splitlines()
-        for pop_lyric in text:
-            pop_lyric.splitlines()
-            replace_contractions(pop_lyric)
-            words = nltk.word_tokenize(pop_lyric)
-            words = normalize(words)
-            # words = translate_language(words)
-
-            for word in words:
-                # english = translator.translate(word)
-                word = word.lower()
-                genre_dictionary['pop'].append(word)
-
-for values in genre_dictionary:
-    
 print(genre_dictionary)
+
+
+
+
